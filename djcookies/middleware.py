@@ -5,9 +5,8 @@ A two-part middleware which modifies request.COOKIES and adds a set and delete m
     `delete` matches django.http.HttpResponse.delete_cookie
  
 MIDDLEWARE_CLASSES = (
-    'djcookies.CookiePreHandlerMiddleware',
+    'djcookies.CookieMiddleware',
     ...
-    'djcookies.CookiePostHandlerMiddleware',
 )
  
 def my_view(request):
@@ -19,9 +18,10 @@ def my_view(request):
 from Cookie import SimpleCookie, Morsel
 import copy
  
-class CookiePreHandlerMiddleware(object):
+class CookieMiddleware(object):
     """
     This middleware modifies request.COOKIES and adds a set and delete method.
+    It also updates the response with all modified cookies when finished
  
     `set` matches django.http.HttpResponse.set_cookie
     `delete` matches django.http.HttpResponse.delete_cookie
@@ -34,13 +34,7 @@ class CookiePreHandlerMiddleware(object):
             cookies[k] = str(v)
         request.COOKIES = cookies
         request._orig_cookies = copy.deepcopy(request.COOKIES)
- 
-class CookiePostHandlerMiddleware(object):
-    """
-    This middleware modifies updates the response will all modified cookies.
- 
-    This should be the last middleware you load.
-    """
+
     def process_response(self, request, response):
         if hasattr(request, '_orig_cookies') and request.COOKIES != request._orig_cookies:
             for k,v in request.COOKIES.iteritems():

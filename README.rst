@@ -10,9 +10,8 @@ Just modify your ``MIDDLEWARE_CLASSES`` setting, order is important here!
 
 :
 	MIDDLEWARE_CLASSES = (
-	    'djcookies.CookiePreHandlerMiddleware',
+	    'djcookies.CookieMiddleware',
 	    ...
-	    'djcookies.CookiePostHandlerMiddleware',
 	)
 
 Usage
