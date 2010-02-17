@@ -10,7 +10,7 @@ and delete cookies without having a response ready.
 """
 
 __all__ = ('__version__', '__build__', '__docformat__', 'get_revision')
-__version__ = (0, 0, 1)
+__version__ = (0, 0, 2)
 __docformat__ = 'restructuredtext en'
 
 import os
